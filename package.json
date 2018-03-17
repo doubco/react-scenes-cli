@@ -1,10 +1,10 @@
 {
   "name": "react-scenes-cli",
   "version": "1.0.0",
-  "description": "CLI for React Scenes",
+  "description": "CLI tool for React Scenes",
   "main": "index.js",
   "preferGlobal": true,
-  "bin": { "reactScenes" : "./index.js" },
+  "bin": { "reactScenes": "./index.js" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "rollup -c -w",
