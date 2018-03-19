@@ -1,12 +1,13 @@
 {
   "presets": [
-    ["env", {
-      "modules": false
-    }]
+    "env",
+    "react",
+    "stage-0"
   ],
   "plugins": [
-    "external-helpers",
-    "transform-export-extensions",
-    "transform-object-rest-spread"
+    "transform-class-properties",
+    "transform-decorators",
+    "transform-react-constant-elements",
+    "transform-react-inline-elements"
   ]
 }

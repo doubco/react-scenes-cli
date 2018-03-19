@@ -1,2 +1,3 @@
 #!/usr/bin/env node
-require("./lib/index.js");
+require("babel-register");
+require("./src/index.js");
