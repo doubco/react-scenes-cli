@@ -1,11 +1,11 @@
 {
   "name": "react-scenes-cli",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "CLI tool for React Scenes",
   "main": "index.js",
   "preferGlobal": true,
   "bin": {
-    "reactScenes": "./index.js"
+    "setReactScenes": "./index.js"
   },
   "repository": {
     "type": "git",
@@ -13,8 +13,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "transpile": "babel ./src --out-dir ./lib --presets=env,react --plugins=transform-export-extensions,transform-object-rest-spread",
     "fix": "chmod +x *",
-    "prepublish": "npm run fix"
+    "prepublish": "npm run transpile && npm run fix"
   },
   "keywords": [
     "react",
@@ -36,10 +37,9 @@
   "peerDependencies": {},
   "devDependencies": {
     "babel-env": "^2.4.1",
-    "babel-eslint": "^8.2.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-register": "^6.26.0",
+    "babel-eslint": "^8.2.1",
     "eslint": "^4.17.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-prettier": "^2.6.0",

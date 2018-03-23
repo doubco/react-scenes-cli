@@ -79,9 +79,13 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
     );
     exec(`npx create-react-app ${folder}`, (err, stdout, stderr) => {
       console.log("OK".green, "create-react-app has been installed.\n".yellow);
+      // console.log(stdout, stderr, err);
 
       // add .scenes/node_modules to .gitignore
-      let gitignore = fs.readFileSync(`${execPath}/.gitignore`);
+      let gitignore;
+      try {
+        gitignore = fs.readFileSync(`${execPath}/.gitignore`);
+      } catch (e) {}
       if (gitignore) {
         fs.writeFileSync(
           `${execPath}/.gitignore`,

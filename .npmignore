@@ -2,10 +2,8 @@
 /node_modules/
 
 /src/
-/examples/
 
 *.sublime-workspace
 *.sublime-project
 
-.babelrc
 .eslintrc.js
