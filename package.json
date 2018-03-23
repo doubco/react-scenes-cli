@@ -7,6 +7,10 @@
   "bin": {
     "reactScenes": "./index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doubco/react-scenes-cli"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "fix": "chmod +x *",
