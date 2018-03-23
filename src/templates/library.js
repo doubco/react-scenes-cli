@@ -44,20 +44,22 @@ frame = {
 let panels = [];
 let actions = [];
 
+let config = {
+  panel: {
+    position: "right" // left, right, top, bottom
+  }
+};
+
 class Library extends Component {
   render() {
     return (
       <Scenes
+        title="{{title}}"
+        config={config}
+        scenes={[buttonScene]}
         frame={frame}
         actions={actions}
         panels={panels}
-        title="{{title}}"
-        config={{
-          panel: {
-            position: "right" // left, right, top, bottom
-          }
-        }}
-        scenes={[buttonScene]}
       />
     );
   }

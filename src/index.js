@@ -13,13 +13,17 @@ import { library, scene, button } from "./templates";
 const { exec } = require("child_process");
 
 const path = process.cwd();
-const folder = "scenes";
+const defaultFolder = "scenes";
 
 program
   .version("0.1.0")
-  .option("--save-dev", "Save as Dev. Dependency")
-  .option("--cra", "Standalone setup with CRA")
+  .option(
+    "--save-dev",
+    "Saves react-scenes as devDependencies (works only with --bare)"
+  )
+  .option("--bare", "Generates only template files")
   .option("-l, --library-name [value]", "Library Name")
+  .option("-f, --folder-name [value]", "Folder Name")
   .parse(process.argv);
 
 const compile = (template, properties) => {
@@ -38,11 +42,12 @@ const compile = (template, properties) => {
   return returnValue;
 };
 
-const createBoilerplate = ({ saveDev, cra, libraryName }) => {
+const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
+  let folder = folderName || defaultFolder;
+
   console.log("\n🌄 ", `react-scenes setup started on ${path}...\n`.rainbow);
 
-  // init cra
-  if (cra) {
+  if (!bare) {
     console.log(
       "OK".green,
       "create-react-app installation has been started...".yellow
@@ -60,16 +65,89 @@ const createBoilerplate = ({ saveDev, cra, libraryName }) => {
         console.log(" OK".green, ".gitignore udpated.".yellow);
       }
 
-      // add run cra command to app package json
-      // install react-scenes under .scenes
+      // npm install react-scenes under .scenes
+      exec(
+        `npm install react-scenes --save --prefix ./${folder}`,
+        (err, stdout, stderr) => {
+          console.log(
+            " OK".green,
+            "react-scenes".green.bold,
+            "saved as dependency to cra.".green
+          );
+          // console.log(stdout, stderr);
+
+          // npm install styled-components under .scenes
+          exec(
+            `npm install styled-components --save --prefix ./${folder}`,
+            (err, stdout, stderr) => {
+              console.log(
+                " OK".green,
+                "styled-components".green.bold,
+                "saved as dependency to cra.\n".green
+              );
+
+              // console.log(stdout, stderr);
+
+              // clean up files
+              exec(`rm -rf ./${folder}/src/App.css`);
+              exec(`rm -rf ./${folder}/src/logo.svg`);
+              exec(`rm -rf ./${folder}/public/favicon.ico`);
+              exec(`rm -rf ./${folder}/README.md`);
+              exec(`rm -rf ./${folder}/etc`);
+
+              // generate library as App.js
+              let libName = libraryName || "🌄 My Scenes";
+
+              fs.writeFileSync(
+                `${path}/${folder}/src/App.js`,
+                compile(library, { title: libName })
+              );
+              console.log(
+                " OK".green,
+                "library named".yellow,
+                `"${libName}"`.bold.yellow,
+                "has been generated.".yellow
+              );
+
+              // generate scene.js
+              fs.writeFileSync(
+                `${path}/${folder}/src/scene.js`,
+                compile(scene, {})
+              );
+              console.log(
+                " OK".green,
+                "demo button scene has been generated.".yellow
+              );
+
+              // generate button.js
+              fs.writeFileSync(
+                `${path}/${folder}/src/button.js`,
+                compile(button, {})
+              );
+              console.log(
+                " OK".green,
+                "demo button component has been generated.\n".yellow
+              );
+
+              // template files
+              console.log(`Thank you 👍`);
+              console.log(
+                `let's start by "cd ${folder} && yarn" or "cd ${folder} && npm install".`
+              );
+              console.log(`then "yarn start" or "npm run start".\n`);
+            }
+          );
+        }
+      );
     });
   } else {
     // create parent folder
     exec(`mkdir ${folder}`, (err, stdout, stderr) => {
       console.log("OK".green, `${folder} folder has been created`.yellow);
 
-      let libName = libraryName || "🌄 My Scenes";
       // generate library.js
+      let libName = libraryName || "🌄 My Scenes";
+
       fs.writeFileSync(
         `${path}/${folder}/library.js`,
         compile(library, { title: libName })

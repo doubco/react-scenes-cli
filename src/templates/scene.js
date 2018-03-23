@@ -38,7 +38,8 @@ export default {
   ],
   events: ["onClick"],
   options: {
-    theme: "light" // ligth, dark, white, black
+    theme: "light", // ligth, dark, white, black
+    centered: true
   },
   docs
 };

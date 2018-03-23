@@ -22,25 +22,26 @@ class Button extends Component {
   }
 
   render() {
-    const { title = "Button", big, small, color } = this.props;
+    const { title = "Button", big, small, theme, onClick } = this.props;
 
     const wrapperStyle = {
       borderRadius: 2,
       cursor: "pointer",
-      background: colors[color],
+      background: colors[theme].main,
       float: "left",
       height: big ? 48 : small ? 24 : 32,
       padding: big ? 16 : small ? 4 : 8
     };
 
     const titleStyle = {
-      lineHeight: 14,
-      color: colors[color],
+      fontFamily: "monospace",
+      lineHeight: "16px",
+      color: colors[theme].negative,
       fontSize: big ? 16 : small ? 10 : 14
     };
 
     return (
-      <div style={wrapperStyle}>
+      <div style={wrapperStyle} onClick={onClick}>
         {title && <div style={titleStyle}>{title}</div>}
       </div>
     );
