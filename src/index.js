@@ -27,6 +27,17 @@ program
   .option("-f, --folder-name [value]", "Folder Name")
   .parse(process.argv);
 
+const slugify = text => {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
+};
+
 const ensureDirectoryExistence = filePath => {
   var dirname = path.dirname(filePath);
   if (fs.existsSync(dirname)) {
@@ -53,7 +64,8 @@ const compile = (template, properties) => {
 };
 
 const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
-  let folder = folderName || defaultFolder;
+  let orgFolder = folderName || defaultFolder;
+  let folder = `${slugify(orgFolder.replace(".", ""))}-temp`;
 
   console.log(
     "\n🌄 ",
@@ -148,10 +160,12 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
                 "demo button component has been generated.\n".yellow
               );
 
+              exec(`mv ${execPath}/${folder} ${execPath}/${orgFolder}`);
+
               // template files
               console.log(`Thank you 👍`);
               console.log(
-                `let's start by "cd ${folder} && yarn" or "cd ${folder} && npm install".`
+                `let's start by "cd ${orgFolder} && yarn" or "cd ${orgFolder} && npm install".`
               );
               console.log(`then "yarn start" or "npm run start".\n`);
             }
@@ -161,14 +175,14 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
     });
   } else {
     // create parent folder
-    exec(`mkdir ${folder}`, (err, stdout, stderr) => {
-      console.log("OK".green, `${folder} folder has been created`.yellow);
+    exec(`mkdir ${orgFolder}`, (err, stdout, stderr) => {
+      console.log("OK".green, `${orgFolder} folder has been created`.yellow);
 
       // generate library.js
       let libName = libraryName || "🌄 My Scenes";
 
       fs.writeFileSync(
-        `${execPath}/${folder}/library.js`,
+        `${execPath}/${orgFolder}/library.js`,
         compile(library, { title: libName })
       );
       console.log(
@@ -180,14 +194,14 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
 
       // generate scene.js
       fs.writeFileSync(
-        `${execPath}/${folder}/scenes/button.js`,
+        `${execPath}/${orgFolder}/scenes/button.js`,
         compile(scene, {})
       );
       console.log(" OK".green, "demo button scene has been generated.".yellow);
 
       // generate button.js
       fs.writeFileSync(
-        `${execPath}/${folder}/components/button.js`,
+        `${execPath}/${orgFolder}/components/button.js`,
         compile(button, {})
       );
       console.log(
