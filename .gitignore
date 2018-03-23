@@ -3,3 +3,4 @@
 
 *.sublime-workspace
 *.sublime-project
+src/index.es5.js
