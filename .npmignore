@@ -1,8 +1,6 @@
 /.github/
 /node_modules/
 
-/src/
-
 *.sublime-workspace
 *.sublime-project
 

@@ -2,6 +2,7 @@
 process
 console
 require
+__dirname
 */
 
 import "colors";
@@ -9,7 +10,9 @@ import program from "commander";
 import fs from "fs";
 import path from "path";
 
-import { library, scene, button } from "./templates";
+const library = fs.readFileSync(`${__dirname}/templates/library.js`, "utf8");
+const scene = fs.readFileSync(`${__dirname}/templates/scene.js`, "utf8");
+const button = fs.readFileSync(`${__dirname}/templates/button.js`, "utf8");
 
 const { exec } = require("child_process");
 
@@ -197,6 +200,7 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
       );
 
       // generate scene.js
+      ensureDirectoryExistence(`${execPath}/${orgFolder}/scenes/button.js`);
       fs.writeFileSync(
         `${execPath}/${orgFolder}/scenes/button.js`,
         compile(scene, {})
@@ -204,6 +208,7 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
       console.log(" OK".green, "demo button scene has been generated.".yellow);
 
       // generate button.js
+      ensureDirectoryExistence(`${execPath}/${orgFolder}/components/button.js`);
       fs.writeFileSync(
         `${execPath}/${orgFolder}/components/button.js`,
         compile(button, {})

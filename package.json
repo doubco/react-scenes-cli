@@ -1,6 +1,6 @@
 {
   "name": "react-scenes-cli",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "CLI tool for React Scenes",
   "main": "index.js",
   "preferGlobal": true,
@@ -13,7 +13,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "transpile": "babel ./src --out-dir ./lib --presets=env,react --plugins=transform-export-extensions,transform-object-rest-spread",
+    "transpile":
+      "babel ./src/index.js --out-file ./src/index.es5.js --presets=env,react --plugins=transform-export-extensions,transform-object-rest-spread",
     "fix": "chmod +x *",
     "prepublish": "npm run transpile && npm run fix"
   },
