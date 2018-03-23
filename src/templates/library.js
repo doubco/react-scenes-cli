@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Scenes } from "react-scenes";
 
-import buttonScene from "./scene";
+import buttonScene from "./scenes/button";
 
 const initialContent = `<!DOCTYPE html>
 <html>

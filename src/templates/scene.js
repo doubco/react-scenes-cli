@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { controllers } from "react-scenes";
 
-import Button from "./button";
+import Button from "../components/button";
 
 const docs = `## Button 
   I'm a button.

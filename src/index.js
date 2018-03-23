@@ -7,13 +7,14 @@ require
 import "colors";
 import program from "commander";
 import fs from "fs";
+import path from "path";
 
 import { library, scene, button } from "./templates";
 
 const { exec } = require("child_process");
 
-const path = process.cwd();
-const defaultFolder = "scenes";
+const execPath = process.cwd();
+const defaultFolder = ".scenes";
 
 program
   .version("0.1.0")
@@ -25,6 +26,15 @@ program
   .option("-l, --library-name [value]", "Library Name")
   .option("-f, --folder-name [value]", "Folder Name")
   .parse(process.argv);
+
+const ensureDirectoryExistence = filePath => {
+  var dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
+};
 
 const compile = (template, properties) => {
   var returnValue = "";
@@ -45,7 +55,10 @@ const compile = (template, properties) => {
 const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
   let folder = folderName || defaultFolder;
 
-  console.log("\n🌄 ", `react-scenes setup started on ${path}...\n`.rainbow);
+  console.log(
+    "\n🌄 ",
+    `react-scenes setup started on ${execPath}...\n`.rainbow
+  );
 
   if (!bare) {
     console.log(
@@ -56,10 +69,10 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
       console.log("OK".green, "create-react-app has been installed.\n".yellow);
 
       // add .scenes/node_modules to .gitignore
-      let gitignore = fs.readFileSync(`${path}/.gitignore`);
+      let gitignore = fs.readFileSync(`${execPath}/.gitignore`);
       if (gitignore) {
         fs.writeFileSync(
-          `${path}/.gitignore`,
+          `${execPath}/.gitignore`,
           `${gitignore}\n\n/.scenes/node_modules/`
         );
         console.log(" OK".green, ".gitignore udpated.".yellow);
@@ -99,7 +112,7 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
               let libName = libraryName || "🌄 My Scenes";
 
               fs.writeFileSync(
-                `${path}/${folder}/src/App.js`,
+                `${execPath}/${folder}/src/App.js`,
                 compile(library, { title: libName })
               );
               console.log(
@@ -110,8 +123,11 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
               );
 
               // generate scene.js
+              ensureDirectoryExistence(
+                `${execPath}/${folder}/src/scenes/button.js`
+              );
               fs.writeFileSync(
-                `${path}/${folder}/src/scene.js`,
+                `${execPath}/${folder}/src/scenes/button.js`,
                 compile(scene, {})
               );
               console.log(
@@ -120,8 +136,11 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
               );
 
               // generate button.js
+              ensureDirectoryExistence(
+                `${execPath}/${folder}/src/components/button.js`
+              );
               fs.writeFileSync(
-                `${path}/${folder}/src/button.js`,
+                `${execPath}/${folder}/src/components/button.js`,
                 compile(button, {})
               );
               console.log(
@@ -149,7 +168,7 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
       let libName = libraryName || "🌄 My Scenes";
 
       fs.writeFileSync(
-        `${path}/${folder}/library.js`,
+        `${execPath}/${folder}/library.js`,
         compile(library, { title: libName })
       );
       console.log(
@@ -160,11 +179,17 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
       );
 
       // generate scene.js
-      fs.writeFileSync(`${path}/${folder}/scene.js`, compile(scene, {}));
+      fs.writeFileSync(
+        `${execPath}/${folder}/scenes/button.js`,
+        compile(scene, {})
+      );
       console.log(" OK".green, "demo button scene has been generated.".yellow);
 
       // generate button.js
-      fs.writeFileSync(`${path}/${folder}/button.js`, compile(button, {}));
+      fs.writeFileSync(
+        `${execPath}/${folder}/components/button.js`,
+        compile(button, {})
+      );
       console.log(
         " OK".green,
         "demo button component has been generated.".yellow
@@ -190,7 +215,7 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
 
         console.log(
           "👍 ",
-          `don't forget to direct a route to ${path}/.scenes/library.js \n`
+          `don't forget to direct a route to ${execPath}/.scenes/library.js \n`
         );
       }
     );
