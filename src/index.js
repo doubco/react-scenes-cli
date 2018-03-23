@@ -94,7 +94,7 @@ const createBoilerplate = ({ saveDev, bare, libraryName, folderName }) => {
           `${execPath}/.gitignore`,
           `${gitignore}\n\n/.scenes/node_modules/`
         );
-        console.log(" OK".green, ".gitignore udpated.".yellow);
+        console.log(" OK".green, ".gitignore updated.".yellow);
       }
 
       // npm install react-scenes under .scenes

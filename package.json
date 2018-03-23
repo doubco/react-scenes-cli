@@ -1,6 +1,6 @@
 {
   "name": "react-scenes-cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "CLI tool for React Scenes",
   "main": "index.js",
   "preferGlobal": true,
